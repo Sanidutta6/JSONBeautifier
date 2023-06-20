@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import FileUploadModal from "./FileUploadModal";
 
 const JSONBeautifier = () => {
   const [rawJsonLineCount, setRawJsonLineCount] = useState(1);
   const [formattedJsonLineCount, setFormattedJsonLineCount] = useState(1);
   const [jsonInput, setJsonInput] = useState("");
   const [formattedJson, setFormattedJson] = useState("");
+  const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 
   const handleInputChange = (event) => {
     const rawJson = event.target.value;
@@ -23,10 +25,27 @@ const JSONBeautifier = () => {
       setFormattedJsonLineCount(1);
     }
   };
+  const handleClear = () => {
+    setJsonInput("");
+    setRawJsonLineCount(1);
+    setFormattedJson("");
+    setFormattedJsonLineCount(1);
+  };
+
+  const handleFileUpload = (fileContent) => {
+    setJsonInput(fileContent);
+    setRawJsonLineCount(fileContent.split("\n").length);
+  };
 
   return (
     <div>
       <div className="bg-background-1 flex h-screen w-screen items-center justify-center">
+        {showFileUploadModal && (
+          <FileUploadModal
+            setShowFileUploadModal={setShowFileUploadModal}
+            handleFileUpload={handleFileUpload}
+          />
+        )}
         <div className="bg-background-2 flex h-4/5 w-10/12 rounded-[36px] px-6 text-white">
           {/* <!-- Raw JSON --> */}
           <div className="h-full w-4/5 pt-6">
@@ -45,8 +64,10 @@ const JSONBeautifier = () => {
               </div>
               {/* <!-- For pasting the json --> */}
               <textarea
-                className="w-full h-full overflow-hidden resize-none border-none bg-background-2 text-sm outline-none"
+                className="w-full overflow-hidden border-none bg-background-2 text-sm outline-none"
+                rows={parseInt(rawJsonLineCount)}
                 onChange={handleInputChange}
+                value={jsonInput}
               ></textarea>
             </div>
           </div>
@@ -57,7 +78,10 @@ const JSONBeautifier = () => {
               JSON Beautifier
             </h1>
             <div className="h-4/5 flex flex-col justify-center items-center gap-8">
-              <button className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+              <button
+                className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                onClick={() => setShowFileUploadModal(!showFileUploadModal)}
+              >
                 Upload
               </button>
               <button
@@ -65,6 +89,12 @@ const JSONBeautifier = () => {
                 onClick={handleValidate}
               >
                 Validate
+              </button>
+              <button
+                className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                onClick={handleClear}
+              >
+                Clear
               </button>
             </div>
           </div>
@@ -111,9 +141,7 @@ const JSONBeautifier = () => {
                 ))}
               </div>
               {/* <!-- For showing the parsed json --> */}
-              <div
-                className="w-full h-5/6 overflow-auto resize-none border-none bg-background-2 text-sm outline-none"
-              >
+              <div className="w-full h-5/6 overflow-auto resize-none border-none bg-background-2 text-sm outline-none">
                 <pre>{formattedJson}</pre>
               </div>
             </div>
