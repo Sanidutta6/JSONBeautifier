@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FileUploadModal from "./FileUploadModal";
+import TextArea from "./TextArea";
 
 const JSONBeautifier = () => {
   const [rawJsonLineCount, setRawJsonLineCount] = useState(1);
@@ -50,7 +51,7 @@ const JSONBeautifier = () => {
           {/* <!-- Raw JSON --> */}
           <div className="h-full w-4/5 pt-6">
             <h1 className="mb-4 text-lg font-semibold">Edit JSON</h1>
-            <div className="flex h-5/6 overflow-auto">
+            <div className="flex h-5/6 overflow-auto scrollbar-thin scrollbar-thumb-slate-500">
               {/* <!-- Line Number --> */}
               <div className="w-8 h-full px-1">
                 {Array.from(
@@ -63,12 +64,7 @@ const JSONBeautifier = () => {
                 ))}
               </div>
               {/* <!-- For pasting the json --> */}
-              <textarea
-                className="w-full overflow-hidden border-none bg-background-2 text-sm outline-none"
-                rows={parseInt(rawJsonLineCount)}
-                onChange={handleInputChange}
-                value={jsonInput}
-              ></textarea>
+              <TextArea jsonInput={jsonInput} handleInputChange={handleInputChange} />
             </div>
           </div>
 
@@ -128,9 +124,9 @@ const JSONBeautifier = () => {
                 <path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path>
               </svg>
             </div>
-            <div className="flex h-full">
+            <div className="flex h-5/6 overflow-auto scrollbar-thin scrollbar-thumb-slate-500">
               {/* <!-- Line Number --> */}
-              <div className="w-4 h-5/6">
+              <div className="w-8 h-full px-1">
                 {Array.from(
                   { length: formattedJsonLineCount },
                   (_, index) => index + 1
@@ -140,10 +136,8 @@ const JSONBeautifier = () => {
                   </div>
                 ))}
               </div>
-              {/* <!-- For showing the parsed json --> */}
-              <div className="w-full h-5/6 overflow-auto resize-none border-none bg-background-2 text-sm outline-none">
-                <pre>{formattedJson}</pre>
-              </div>
+              {/* <!-- For pasting the json --> */}
+              <TextArea jsonInput={formattedJson} handleInputChange={handleInputChange} readOnly={true} />
             </div>
           </div>
         </div>

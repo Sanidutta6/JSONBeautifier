@@ -4,12 +4,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'background-1': '#9DADE7',
-        'background-2': '#2B1354',
-        'background-3': '#F6F8FE',
-        'color-1': "#4C2A85"
+        "background-1": "#9DADE7",
+        "background-2": "#2B1354",
+        "background-3": "#F6F8FE",
+        "color-1": "#4C2A85",
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    require("tailwind-scrollbar"),
+  ],
+};
