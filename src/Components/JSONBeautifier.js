@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import FileUploadModal from "./FileUploadModal";
 import TextArea from "./TextArea";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const JSONBeautifier = () => {
   const [rawJsonLineCount, setRawJsonLineCount] = useState(1);
   const [formattedJsonLineCount, setFormattedJsonLineCount] = useState(1);
@@ -78,7 +81,13 @@ const JSONBeautifier = () => {
                 className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                 onClick={() => setShowFileUploadModal(!showFileUploadModal)}
               >
-                Upload
+                Upload File
+              </button>
+              <button
+                className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                onClick={handleClear}
+              >
+                URL
               </button>
               <button
                 className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
@@ -99,8 +108,9 @@ const JSONBeautifier = () => {
           <div className="h-full w-4/5 pt-6">
             <div className="mb-4 flex justify-between">
               <h1 className="text-lg font-semibold">Formatted JSON</h1>
+              <ToastContainer />
               <svg
-                className="cursor-pointer"
+                className="cursor-pointer rounded-lg h-8 w-8 p-1 shadow-inner hover:shadow-white"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -114,10 +124,10 @@ const JSONBeautifier = () => {
                   navigator.clipboard
                     .writeText(formattedJson)
                     .then(() => {
-                      console.log("Formatted JSON copied to clipboard");
+                      toast.success("Formatted JSON copied to clipboard")
                     })
                     .catch((error) => {
-                      console.error("Failed to copy formatted JSON:", error);
+                      toast.error("Failed to copy formatted JSON");
                     });
                 }}
               >
@@ -137,7 +147,7 @@ const JSONBeautifier = () => {
                 ))}
               </div>
               {/* <!-- For pasting the json --> */}
-              <TextArea jsonInput={formattedJson} handleInputChange={handleInputChange} readOnly={true} />
+              <TextArea jsonInput={formattedJson} handleInputChange={handleInputChange} readOnly={true} formatted={true} />
             </div>
           </div>
         </div>

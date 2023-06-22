@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-function TextArea({ jsonInput, handleInputChange, readOnly=false }) {
+function TextArea({ jsonInput, handleInputChange, readOnly=false, formatted=false }) {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function TextArea({ jsonInput, handleInputChange, readOnly=false }) {
   return (
     <textarea
       readOnly={readOnly}
-      className="w-full border-none resize-none bg-background-2 text-sm outline-none whitespace-nowrap scrollbar-none"
+      className={`w-full border-none resize-none bg-background-2 text-sm outline-none ${formatted?"whitespace-pre":"whitespace-nowrap"} scrollbar-none`}
       ref={textareaRef}
       value={jsonInput}
       onChange={handleInputChange}
