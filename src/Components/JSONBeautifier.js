@@ -11,6 +11,7 @@ const JSONBeautifier = () => {
   const [jsonInput, setJsonInput] = useState("");
   const [formattedJson, setFormattedJson] = useState("");
   const [showFileUploadModal, setShowFileUploadModal] = useState(false);
+  const [isRemote, setIsRemote] = useState(false);
 
   const handleInputChange = (event) => {
     const rawJson = event.target.value;
@@ -34,6 +35,7 @@ const JSONBeautifier = () => {
     setRawJsonLineCount(1);
     setFormattedJson("");
     setFormattedJsonLineCount(1);
+    setIsRemote(false);
   };
 
   const handleFileUpload = (fileContent) => {
@@ -48,6 +50,7 @@ const JSONBeautifier = () => {
           <FileUploadModal
             setShowFileUploadModal={setShowFileUploadModal}
             handleFileUpload={handleFileUpload}
+            isRemote={isRemote}
           />
         )}
         <div className="bg-background-2 flex h-4/5 w-10/12 rounded-[36px] px-6 text-white">
@@ -79,13 +82,19 @@ const JSONBeautifier = () => {
             <div className="h-4/5 flex flex-col justify-center items-center gap-8">
               <button
                 className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                onClick={() => setShowFileUploadModal(!showFileUploadModal)}
+                onClick={() => {
+                  setIsRemote(false)
+                  setShowFileUploadModal(!showFileUploadModal)
+                }}
               >
                 Upload File
               </button>
               <button
                 className="w-full rounded-md border border-black px-3 py-2 text-lg font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                onClick={handleClear}
+                onClick={() => {
+                  setIsRemote(true)
+                  setShowFileUploadModal(!showFileUploadModal)
+                }}
               >
                 URL
               </button>
